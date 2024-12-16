@@ -20,8 +20,20 @@ const AdminDashboard: React.FC = () => {
     }
 
     try {
-      const encryptedData = encryptData(data); // Implement this function
-      await addDoc(collection(db, 'locations'), { data: encryptedData });
+      const locationData = JSON.parse(data);
+      const encryptedData = encryptData(JSON.stringify(locationData));
+      
+      // Create searchable encrypted fields
+      const searchableFields = Object.keys(locationData).reduce((acc, key) => {
+        acc[key] = encryptData(locationData[key].toString().toLowerCase());
+        return acc;
+      }, {} as Record<string, string>);
+
+      await addDoc(collection(db, 'locations'), { 
+        data: encryptedData,
+        searchableFields
+      });
+
       setSuccess('Data uploaded successfully');
       setData('');
       log('info', 'Admin uploaded location data');
