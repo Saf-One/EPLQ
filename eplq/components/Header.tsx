@@ -1,19 +1,38 @@
-import Image from 'next/image'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { auth } from '../firebase/config';
+import { log } from '../utils/logger';
 
-export default function Header() {
-  return (
-    <header className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-4 flex items-center">
-        <Image
-          src="/logo.svg"
-          alt="Saf-One Logo"
-          width={40}
-          height={40}
-          className="mr-4 animate-spin-slow"
-        />
-        <h2 className="text-2xl font-semibold text-indigo-800">Saf-One</h2>
-      </div>
-    </header>
-  )
+interface HeaderProps {
+  user: any;
 }
+
+const Header: React.FC<HeaderProps> = ({ user }) => {
+  const handleLogout = () => {
+    auth.signOut()
+      .then(() => log('info', 'User logged out', { userId: user.uid }))
+      .catch((error) => log('error', 'Logout failed', { error }));
+  };
+
+  return (
+    <header className="app-header">
+      <h1>EPLQ System</h1>
+      <nav>
+        {user ? (
+          <>
+            <span>Welcome, {user.email}</span>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/admin/login">Admin Login</Link>
+            <Link to="/user/login">User Login</Link>
+          </>
+        )}
+      </nav>
+    </header>
+  );
+};
+
+export default Header;
 

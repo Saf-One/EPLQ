@@ -1,0 +1,97 @@
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.App {
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.app-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.app-header h1 {
+  margin: 0;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.app-header nav {
+  margin-top: 10px;
+}
+
+.app-header nav a, .app-header nav button {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.auth-form, .admin-dashboard, .user-dashboard {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.auth-form input, .auth-form textarea, .admin-dashboard textarea, .user-dashboard input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.auth-form button, .admin-dashboard button, .user-dashboard button {
+  width: 100%;
+  padding: 10px;
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-form button:hover, .admin-dashboard button:hover, .user-dashboard button:hover {
+  background-color: #21a1c9;
+}
+
+.error {
+  color: red;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success {
+  color: green;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.search-results {
+  margin-top: 20px;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results li {
+  background-color: #f0f0f0;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
