@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase/config';
 import { log } from './utils/logger';
+import ErrorBoundary from './components/ErrorBoundary';
+import Loading from './components/Loading';
 import Header from './components/Header';
 import Home from './components/Home';
 import AdminRegister from './components/AdminRegister';
@@ -23,7 +25,7 @@ const App: React.FC = () => {
   }, [user]);
 
   if (loading) {
-    return <div className="container mx-auto mt-8 text-center">Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -31,26 +33,28 @@ const App: React.FC = () => {
   }
 
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/admin/register" component={AdminRegister} />
-          <Route path="/admin/login" component={AdminLogin} />
-          <Route 
-            path="/admin/dashboard" 
-            render={() => user ? <AdminDashboard /> : <Redirect to="/admin/login" />} 
-          />
-          <Route path="/user/register" component={UserRegister} />
-          <Route path="/user/login" component={UserLogin} />
-          <Route 
-            path="/user/dashboard" 
-            render={() => user ? <UserDashboard /> : <Redirect to="/user/login" />} 
-          />
-        </Switch>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="App">
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/admin/register" component={AdminRegister} />
+            <Route path="/admin/login" component={AdminLogin} />
+            <Route 
+              path="/admin/dashboard" 
+              render={() => user ? <AdminDashboard /> : <Redirect to="/admin/login" />} 
+            />
+            <Route path="/user/register" component={UserRegister} />
+            <Route path="/user/login" component={UserLogin} />
+            <Route 
+              path="/user/dashboard" 
+              render={() => user ? <UserDashboard /> : <Redirect to="/user/login" />} 
+            />
+          </Switch>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 
