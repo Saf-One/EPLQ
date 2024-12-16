@@ -15,7 +15,5 @@ export function log(level: LogLevel, message: string, data?: any) {
       console.error(logMessage, data);
       break;
   }
-  
-  // Here you can also implement sending logs to a server or saving them to a file
 }
 

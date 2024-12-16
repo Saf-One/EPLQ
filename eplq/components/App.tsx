@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase/config';
 import { log } from './utils/logger';
 import Header from './components/Header';
@@ -13,28 +13,27 @@ import UserLogin from './components/UserLogin';
 import UserDashboard from './components/UserDashboard';
 import './App.css';
 
-function App() {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+const App: React.FC = () => {
+  const [user, loading, error] = useAuthState(auth);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-      log('info', 'Auth state changed', { userId: user?.uid });
-    });
-
-    return () => unsubscribe();
-  }, []);
+  React.useEffect(() => {
+    if (user) {
+      log('info', 'Auth state changed', { userId: user.uid });
+    }
+  }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="container mx-auto mt-8 text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="container mx-auto mt-8 text-center">Error: {error.message}</div>;
   }
 
   return (
     <Router>
       <div className="App">
-        <Header user={user} />
+        <Header />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/admin/register" component={AdminRegister} />

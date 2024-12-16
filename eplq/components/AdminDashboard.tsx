@@ -3,6 +3,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { log } from '../utils/logger';
 import { validateLocationData } from '../utils/validation';
+import { encryptData } from '../utils/crypto';
 
 const AdminDashboard: React.FC = () => {
   const [data, setData] = useState('');
@@ -44,19 +45,34 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="admin-dashboard">
-      <h2>Admin Dashboard</h2>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          value={data}
-          onChange={(e) => setData(e.target.value)}
-          placeholder="Enter location data (JSON format)"
-          required
-        />
-        <button type="submit">Upload Data</button>
+    <div className="container mx-auto mt-8 max-w-md">
+      <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="data">
+            Location Data (JSON format)
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="data"
+            rows={6}
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            placeholder="Enter location data in JSON format"
+            required
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Upload Data
+          </button>
+        </div>
       </form>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
+      {error && <p className="text-red-500 text-xs italic">{error}</p>}
+      {success && <p className="text-green-500 text-xs italic">{success}</p>}
     </div>
   );
 };
